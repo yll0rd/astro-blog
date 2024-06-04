@@ -1,9 +1,11 @@
 ---
+import { formatDate } from "@/utils";
 import Layout from "@layouts/Layout.astro";
 import { getCollection } from "astro:content"
 import type { CollectionEntry } from "astro:content";
 
-const allBlogArticles: CollectionEntry<'blog'>[] = await getCollection('blog');
+const allBlogArticles: CollectionEntry<'blog'>[] = (await getCollection('blog')).sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
 ---
 
 <Layout>
@@ -24,7 +26,7 @@ const allBlogArticles: CollectionEntry<'blog'>[] = await getCollection('blog');
                     <h2 class="text-2xl font-semibold mb-2">
                         <a href={`/article/${article.slug}`}> {article.data.title} </a>
                     </h2>
-                    <p class="text-gray-600 text-sm mb-4">{article.data.pubDate}</p>
+                    <p class="text-gray-600 text-sm mb-4">{formatDate(article.data.pubDate)}</p>
                     <div class="flex flex-wrap gap-2">
                     {article.data.tags.map((tag: string, index: number ) => (
                         <span class={`px-2 py-1 bg-blue-500 text-white rounded-full text-xs hover:opacity-90 ${index % 2 === 0 ? "bg-green-500" : "bg-indigo-500"}`}>
