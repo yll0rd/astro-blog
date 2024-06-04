@@ -1,8 +1,8 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import ArticleCard from "@components/ArticleCard.astro";
-import { getCollection } from "astro:content"
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content"
+import SearchForm from "@/components/SearchForm.astro";
 
 const allBlogArticles: CollectionEntry<'blog'>[] = (await getCollection('blog')).sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
@@ -10,6 +10,10 @@ const allBlogArticles: CollectionEntry<'blog'>[] = (await getCollection('blog'))
 
 <Layout>
     <h1 class="text-2xl pb-3">All Articles</h1>
+
+    <SearchForm />
+    <br />
+    
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {allBlogArticles.map(article => (
             <ArticleCard article={article} />
